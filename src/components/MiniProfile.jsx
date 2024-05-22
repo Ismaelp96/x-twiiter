@@ -19,8 +19,8 @@ export default function MiniProfile() {
                   </button>
                   <img
                     src={session?.user?.image}
-                    alt='user-profile-pic or instagram logo'
-                    title='user-profile-pic or instagram logo'
+                    alt='user-profile-pic'
+                    title={session?.user?.image ? 'user-profile-pic' : ''}
                     className='w-full max-w-[46px] rounded-full'
                   />
                 </div>

@@ -18,7 +18,7 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 
-import { app } from '../../firebase';
+import { app } from '../firebase';
 
 export default function Input() {
   const { data: session } = useSession();
@@ -88,6 +88,7 @@ export default function Input() {
     setText('');
     setImageFileUrl(null);
     setSelectedFile(null);
+    location.reload();
   };
 
   if (!session) return null;

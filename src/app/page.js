@@ -1,3 +1,4 @@
+import Feed from '@/components/Feed';
 import Input from '@/components/Input';
 import News from '@/components/News';
 import Sidebar from '@/components/Sidebar';
@@ -13,8 +14,8 @@ export default function Home() {
           <h2 className='text-lg sm:text-xl font-bold'>Home</h2>
         </div>
         <Input />
+        <Feed />
       </div>
-
       <div className='lg:flex-col p-3 min-h-screen hidden lg:flex w-full max-w-[24rem]'>
         <div className='sticky top-0 bg-white py-2 space-y-4'>
           <input

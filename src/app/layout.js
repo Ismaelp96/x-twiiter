@@ -8,7 +8,7 @@ import SessionWrapper from '@/components/SessionWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'X',
+  title: 'X - Twitter',
   description: 'basead in X website',
 };
 
