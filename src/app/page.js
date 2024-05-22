@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar';
 export default function Home() {
   return (
     <div className='flex items-start justify-between w-full max-w-[1440px]  mx-auto'>
-      <div className='h-screen w-full max-w-24 xl:max-w-[220px]'>
+      <div className='h-screen w-full max-w-24 xl:max-w-[220px] sticky top-0'>
         <Sidebar />
       </div>
       <div className='w-full border-l min-h-screen border-r'>
