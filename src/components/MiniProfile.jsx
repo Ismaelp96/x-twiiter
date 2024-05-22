@@ -10,20 +10,24 @@ export default function MiniProfile() {
     <>
       {session ? (
         <>
-          <div className='flex items-center justify-between w-full space-x-2'>
+          <div className='flex items-end justify-end w-full'>
             <div className='w-full flex items-center gap-1'>
-              <img
-                src={session?.user?.image}
-                alt='user-profile-pic or instagram logo'
-                title='user-profile-pic or instagram logo'
-                className='w-full max-w-[46px] rounded-full'
-              />
-              <h4 className='font-semibold font-xs hidden xl:inline'>
-                @{session?.user.username}
-              </h4>
-              <button onClick={() => signOut()} className='w-full max-w-5'>
-                <RxExit className='w-5 h-5 text-gray-700 hover:text-gray-400 pt-1' />
-              </button>
+              <div className='flex flex-col items-end'>
+                <div className='flex items-center gap-2'>
+                  <button onClick={() => signOut()} className='w-full max-w-5'>
+                    <RxExit className='w-5 h-5 text-gray-900 hover:text-gray-400 pt-1 transition-colors duration-200' />
+                  </button>
+                  <img
+                    src={session?.user?.image}
+                    alt='user-profile-pic or instagram logo'
+                    title='user-profile-pic or instagram logo'
+                    className='w-full max-w-[46px] rounded-full'
+                  />
+                </div>
+                <h4 className='text-sm hidden xl:inline text-gray-500'>
+                  @{session?.user.username}
+                </h4>
+              </div>
             </div>
           </div>
         </>
