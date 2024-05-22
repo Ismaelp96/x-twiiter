@@ -44,13 +44,13 @@ export default function Icons({ id }) {
     onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) => {
       setLikes(snapshot.docs);
     });
-  }, [db]);
+  }, [db, id]);
 
   useEffect(() => {
     setIsLiked(
       likes.findIndex((like) => like.id === session?.user?.uid) !== -1
     );
-  }, [likes]);
+  }, [likes, session?.user?.uid]);
 
   return (
     <div className='flex items-center justify-start gap-5 p-2 text-gray-500'>
