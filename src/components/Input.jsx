@@ -33,37 +33,36 @@ export default function Input() {
 
   useEffect(() => {
     if (selectedFile) {
+      const uploadImageToStorage = () => {
+        setImageFileUploading(true);
+        const storage = getStorage(app);
+        const fileName = new Date().getTime() + '-' + selectedFile.name;
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+          },
+          (error) => {
+            console.log(error);
+            setImageFileUploading(false);
+            setImageFileUrl(null);
+            setSelectedFile(null);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              setImageFileUrl(downloadURL);
+              setImageFileUploading(false);
+            });
+          }
+        );
+      };
       uploadImageToStorage();
     }
   }, [selectedFile]);
-
-  const uploadImageToStorage = () => {
-    setImageFileUploading(true);
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + '-' + selectedFile.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-      },
-      (error) => {
-        console.log(error);
-        setImageFileUploading(false);
-        setImageFileUrl(null);
-        setSelectedFile(null);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageFileUrl(downloadURL);
-          setImageFileUploading(false);
-        });
-      }
-    );
-  };
 
   if (!session) return null;
 
