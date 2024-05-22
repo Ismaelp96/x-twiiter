@@ -19,7 +19,7 @@ export default function MiniProfile() {
                   </button>
                   <img
                     src={session?.user?.image}
-                    alt='user-profile-pic'
+                    alt={session?.user?.image ? 'user-profile-pic' : ''}
                     title={session?.user?.image ? 'user-profile-pic' : ''}
                     className='w-full max-w-[46px] rounded-full'
                   />
