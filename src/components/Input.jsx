@@ -5,14 +5,20 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { IoIosCloseCircleOutline } from 'react-icons/io';
-
-import { app } from '../../firebase';
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from 'firebase/firestore';
+
+import { app } from '../../firebase';
 
 export default function Input() {
   const { data: session } = useSession();
@@ -20,8 +26,11 @@ export default function Input() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagefileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
+  const [text, setText] = useState('');
+  const [postLoading, setPostLoading] = useState(false);
 
   const imagePickRef = useRef(null);
+  const db = getFirestore(app);
 
   const addImageToPost = (e) => {
     const file = e.target.files[0];
@@ -64,6 +73,23 @@ export default function Input() {
     }
   }, [selectedFile]);
 
+  const handleSubmit = async () => {
+    setPostLoading(true);
+    const docReff = await addDoc(collection(db, 'posts'), {
+      uid: session.user.uid,
+      name: session.user.name,
+      username: session.user.username,
+      text,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+      image: imagefileUrl,
+    });
+    setPostLoading(false);
+    setText('');
+    setImageFileUrl(null);
+    setSelectedFile(null);
+  };
+
   if (!session) return null;
 
   return (
@@ -79,6 +105,8 @@ export default function Input() {
           rows='2'
           placeholder="What's happening?"
           id=''
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           className='tracking-wide placeholder:text-gray-500 text-gray-700 bg-white placeholder:text-base resize-none min-h-[50px] xl:min-h-[120px] border-b pt-1 border-gray-200 flex-1 w-full focus:border-blue-400/40 focus:outline-none'
         ></textarea>
         {selectedFile && (
@@ -86,9 +114,11 @@ export default function Input() {
             <img
               src={imagefileUrl}
               alt='image'
-              className='w-full h-full object-cover'
+              className={`h-auto w-full max-w-fit max-h-[250px] ${
+                imageFileUploading ? 'animate-pulse' : ''
+              }`}
             />
-            <button className='text-white hover:text-blue-200 transition-colors absolute top-2 right-2'>
+            <button className='text-gray-300 hover:text-blue-200 transition-colors absolute top-2 right-2'>
               <IoIosCloseCircleOutline className='xl:h-10 xl:w-10' />
             </button>
           </div>
@@ -105,7 +135,11 @@ export default function Input() {
             onClick={() => imagePickRef.current.click()}
             className='w-9 h-9 p-1 text-sky-500 hover:bg-sky-100 cursor-pointer rounded-full transition-all duration-200'
           />
-          <button className='bg-blue-400 text-white font-bold rounded-full px-4 hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md inline-block disabled:opacity-50'>
+          <button
+            disabled={text.trim() === '' || postLoading || imageFileUploading}
+            onClick={handleSubmit}
+            className='bg-blue-400 text-white font-bold rounded-full px-4 hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md inline-block disabled:opacity-50'
+          >
             Post
           </button>
         </div>
