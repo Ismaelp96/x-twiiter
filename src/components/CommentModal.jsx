@@ -9,18 +9,25 @@ import { useSession } from 'next-auth/react';
 import { modalState, postIdState } from '@/atom/modalAtom';
 import { useEffect, useState } from 'react';
 import { app } from '@/firebase';
-import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  serverTimestamp,
+} from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 
 export default function CommentModal() {
   const { data: session } = useSession();
   const db = getFirestore(app);
+  const router = useRouter();
 
   const [open, setOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [post, setPost] = useState({});
   const [input, setInput] = useState('');
-
-  const handlerSendComment = async () => {};
 
   useEffect(() => {
     if (postId !== '') {
@@ -35,6 +42,24 @@ export default function CommentModal() {
       return () => unsubscribe();
     }
   }, [db, postId]);
+
+  const handlerSendComment = async () => {
+    await addDoc(collection(db, 'posts', postId, 'comments'), {
+      name: session?.user?.name,
+      username: session?.user?.username,
+      userImg: session?.user?.image,
+      comment: input,
+      timestamp: serverTimestamp(),
+    })
+      .then(() => {
+        setInput('');
+        setOpen(false);
+        router.push(`/posts/${postId}`);
+      })
+      .catch((error) => {
+        console.error('Error adding document:', error);
+      });
+  };
 
   return (
     <div>
@@ -83,6 +108,7 @@ export default function CommentModal() {
                     rows='2'
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
+                    autoFocus
                   ></textarea>
                 </div>
                 <div className='flex items-center justify-end pt-2.5'>
