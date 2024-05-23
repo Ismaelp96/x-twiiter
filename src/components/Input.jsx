@@ -3,8 +3,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
-import { HiOutlinePhotograph } from 'react-icons/hi';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
+import { HiOutlinePhotograph, HiX } from 'react-icons/hi';
 import {
   getStorage,
   ref,
@@ -120,7 +119,7 @@ export default function Input() {
               }`}
             />
             <button className='text-gray-300 hover:text-blue-200 transition-colors absolute top-2 right-2'>
-              <IoIosCloseCircleOutline className='xl:h-10 xl:w-10' />
+              <HiX className='text-2xl text-gray-700 p-1 hover:bg-gray-200 rounded-full' />
             </button>
           </div>
         )}

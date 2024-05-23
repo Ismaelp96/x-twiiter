@@ -1,3 +1,4 @@
+import CommentModal from '@/components/CommentModal';
 import Feed from '@/components/Feed';
 import Input from '@/components/Input';
 import News from '@/components/News';
@@ -15,6 +16,7 @@ export default function Home() {
         </div>
         <Input />
         <Feed />
+        <CommentModal />
       </div>
       <div className='lg:flex-col p-3 min-h-screen hidden lg:flex w-full max-w-[24rem]'>
         <div className='sticky top-0 bg-white py-2 space-y-4'>
