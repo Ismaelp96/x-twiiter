@@ -34,7 +34,7 @@ export default function Post({ post, id }) {
             )}
           </Link>
         </div>
-        <Icons id={id} />
+        <Icons id={id} uid={post.uid} />
       </div>
     </div>
   );
