@@ -1,3 +1,4 @@
+import Comments from '@/components/Comments';
 import Post from '@/components/Post';
 import { app } from '@/firebase';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
@@ -22,6 +23,7 @@ export default async function PostPage({ params }) {
         <span className='text-base sm:text-lg'>Back</span>
       </div>
       <Post post={data} id={data.id} />
+      <Comments id={params.id} />
     </div>
   );
 }

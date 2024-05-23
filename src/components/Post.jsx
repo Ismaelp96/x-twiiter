@@ -17,8 +17,8 @@ export default function Post({ post, id }) {
       <div className='flex flex-col flex-1'>
         <div className='flex w-full items-start justify-between mb-6'>
           <div className='flex items-center space-x-1 whitespace-nowrap'>
-            <h4 className='font-bold text-sm truncate'>{post?.name}</h4>
-            <p className='text-gray-600 text-xs truncate'>@{post?.username}</p>
+            <h4 className='font-bold text-base truncate'>{post?.name}</h4>
+            <p className='text-gray-600 text-sm truncate'>@{post?.username}</p>
           </div>
           <HiDotsHorizontal className='text-sm' />
         </div>
